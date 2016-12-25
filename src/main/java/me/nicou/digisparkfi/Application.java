@@ -7,6 +7,10 @@ import java.util.Map;
 
 public class Application {
 	
+	// This simple program converts a string to executable
+	// DigiSpark Keyboard code for Finnish keyboard layout
+	
+	// DigiSpark Keyboard key names:
 	// https://github.com/digistump/DigisparkArduinoIntegration/blob/master/libraries/DigisparkKeyboard/DigiKeyboard.h
 
 	private final static String SHIFT = "MOD_SHIFT_LEFT";
