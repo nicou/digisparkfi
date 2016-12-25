@@ -15,7 +15,7 @@ public class Application {
 
 	private final static String SHIFT = "MOD_SHIFT_LEFT";
 	private final static String ALTGR = "MOD_ALT_RIGHT";
-	private final static String NORMALKEYS = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789 ";
+	private final static String NORMALKEYS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
 	
 	public static void main(String[] args) {
 		
@@ -73,7 +73,7 @@ public class Application {
 	}
 	
 	public static String printNormalCharacters(String printable) {
-		return "DigiKeyboard.print('" + printable + "');";
+		return "DigiKeyboard.print(\"" + printable + "\");";
 	}
 	
 	public static String printSpecialCharacter(SpecialCharacter character) {
@@ -101,16 +101,23 @@ public class Application {
 		map.put("[", new SpecialCharacter("KEY_8", ALTGR));
 		map.put("]", new SpecialCharacter("KEY_9", ALTGR));
 		map.put("}", new SpecialCharacter("KEY_0", ALTGR));
+		map.put("?", new SpecialCharacter("45", SHIFT));
+		map.put("\\", new SpecialCharacter("45", ALTGR));
+		map.put(";", new SpecialCharacter("54", SHIFT));
+		map.put(":", new SpecialCharacter("55", SHIFT));
+		map.put("_", new SpecialCharacter("56", SHIFT));
 		return map;
 	}
 	
 	public static Map<String, Integer> getKeyCodes() {
 		Map<String, Integer> keycodes = new HashMap<String, Integer>();
 		keycodes.put("'", 50);
-		keycodes.put("+", 48);
+		keycodes.put("+", 45);
 		keycodes.put(",", 54);
 		keycodes.put(".", 55);
 		keycodes.put("-", 56);
+		keycodes.put("ö", 51);
+		keycodes.put("ä", 52);
 		return keycodes;
 	}
 
