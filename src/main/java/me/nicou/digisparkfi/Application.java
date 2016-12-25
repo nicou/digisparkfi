@@ -11,7 +11,6 @@ public class Application {
 
 	private final static String SHIFT = "MOD_SHIFT_LEFT";
 	private final static String ALTGR = "MOD_ALT_RIGHT";
-	private final static String ENTER = "KEY_ENTER";
 	private final static String NORMALKEYS = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789 ";
 	
 	public static void main(String[] args) {
@@ -36,7 +35,7 @@ public class Application {
 		// Temporary variable for text to be printed with DigiKeyboard.print()
 		String printable = "";
 		
-		// Loop through each input character
+		// Loop through each input character and add to code list
 		for (String character : input) {
 			if (NORMALKEYS.indexOf(character) >= 0) {
 				printable += character;
@@ -55,6 +54,11 @@ public class Application {
 			} else {
 				code.add("// Unknown character: " + character);
 			}
+		}
+		
+		// Add remaining buffer to code list
+		if (printable.length() > 0) {
+			code.add(printNormalCharacters(printable));
 		}
 		
 		// Print the code
