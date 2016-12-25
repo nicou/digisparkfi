@@ -1,6 +1,8 @@
 package me.nicou.digisparkfi;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Application {
@@ -9,13 +11,72 @@ public class Application {
 
 	private final static String SHIFT = "MOD_SHIFT_LEFT";
 	private final static String ALTGR = "MOD_ALT_RIGHT";
-	private final static String NORMALKEYS = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789";
+	private final static String ENTER = "KEY_ENTER";
+	private final static String NORMALKEYS = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789 ";
 	
 	public static void main(String[] args) {
+		
+		// Require only one argument
+		if (args.length != 1) {
+			System.out.println("Enter one argument");
+			System.exit(0);
+		}
+		
+		// Get input string and split each character into array
+		String[] input = args[0].split("");
+		
+		// Get maps of special character and keycodes
+		Map<String, SpecialCharacter> specialCharacterMap = getSpecialCharacterMap();
+		Map<String, Integer> keycodes = getKeyCodes();
+		
+		
+		// List of final code lines
+		List<String> code = new ArrayList<String>();
+		
+		// Temporary variable for text to be printed with DigiKeyboard.print()
+		String printable = "";
+		
+		// Loop through each input character
+		for (String character : input) {
+			if (NORMALKEYS.indexOf(character) >= 0) {
+				printable += character;
+			} else if (specialCharacterMap.containsKey(character)) {
+				if (printable.length() > 0) {
+					code.add(printNormalCharacters(printable));
+					printable = "";
+				}
+				code.add(printSpecialCharacter(specialCharacterMap.get(character)));
+			} else if (keycodes.containsKey(character)) {
+				if (printable.length() > 0) {
+					code.add(printNormalCharacters(printable));
+					printable = "";
+				}
+				code.add(printKeyCode(keycodes.get(character)));
+			} else {
+				code.add("// Unknown character: " + character);
+			}
+		}
+		
+		// Print the code
+		for (String line : code) {
+			System.out.println(line);
+		}
 
 	}
 	
-	public Map<String, SpecialCharacter> getSpecialCharacterMap() {
+	public static String printNormalCharacters(String printable) {
+		return "DigiKeyboard.print('" + printable + "');";
+	}
+	
+	public static String printSpecialCharacter(SpecialCharacter character) {
+		return "DigiKeyboard.sendKeyStroke(" + character.getKey() + ", " + character.getModifier() + ");";
+	}
+	
+	public static String printKeyCode(int keycode) {
+		return "DigiKeyboard.sendKeyStroke(" + keycode + ");";
+	}
+	
+	public static Map<String, SpecialCharacter> getSpecialCharacterMap() {
 		Map<String, SpecialCharacter> map = new HashMap<String, SpecialCharacter>();
 		map.put("!", new SpecialCharacter("KEY_1", SHIFT));
 		map.put("\"", new SpecialCharacter("KEY_2", SHIFT));
@@ -35,7 +96,7 @@ public class Application {
 		return map;
 	}
 	
-	public Map<String, Integer> getKeyCodes() {
+	public static Map<String, Integer> getKeyCodes() {
 		Map<String, Integer> keycodes = new HashMap<String, Integer>();
 		keycodes.put("'", 50);
 		keycodes.put("+", 48);
